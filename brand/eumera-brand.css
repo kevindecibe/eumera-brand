@@ -1,0 +1,239 @@
+/* ============================================================
+   EUMERA — Sistema de marca
+   Base única para toda generación de PDF
+   (Playwright / Chromium headless)
+
+   Consolida dos sistemas que hasta ahora vivían separados:
+     · paleta               → tomada del logo (CANÓNICA)
+     · grilla y tipografía  → sistema de layout de EUMERA
+   ============================================================ */
+
+:root {
+  /* ---------- Paleta corporativa — CANÓNICA ----------
+     Fuente de verdad: el logo. Cualquier otro valor que aparezca
+     en un documento o sitio es deuda a corregir.               */
+  --navy-900:  #0A1F4C;   /* wordmark, titulares, texto principal */
+  --blue-700:  #013E7A;   /* PRIMARIO — color de marca            */
+  --blue-500:  #0F63A0;   /* acento corporativo, enlaces          */
+  --slate-400: #677593;   /* texto de cuerpo                      */
+  --slate-200: #A6B4C8;   /* bordes, filetes, separadores         */
+  --slate-50:  #E0E8F0;   /* fondos suaves, cajas                 */
+  --white:     #FFFFFF;
+
+  /* ---------- Acento por unidad de negocio ----------
+     Único punto de diferenciación visual entre verticales.
+     Ambos comparten peso óptico exacto: contraste 4.61 sobre
+     blanco y 3.47 sobre navy. Se distinguen por tono, nunca por
+     intensidad — no compiten en jerarquía.                      */
+  --copper: #B0602A;   /* MINING   — el cobre, mineral que encabeza la cartera */
+  --ocean:  #178282;   /* SOURCING — el Atlántico Sur, origen del langostino   */
+
+  --accent: var(--blue-500);   /* default: corporativo */
+
+  /* ---------- Tipografía ----------
+     Estructura del sistema: serif para títulos, sans para
+     cuerpo. Familia: IBM Plex (IBM, SIL Open Font License 1.1).
+
+     Superfamilia: serif y sans están diseñadas juntas, comparten
+     esqueleto y métricas. Altura de x 52% en ambas — aguanta las
+     tablas a 7,5pt, que es donde el documento más aprieta.
+
+     REQUISITO: correr 02_Tipografias/install-fonts.sh antes de
+     generar. Si IBM Plex no está instalada, Chromium NO falla:
+     cae en Arial en silencio y el PDF sale mal sin aviso.        */
+  --font-serif: "IBM Plex Serif", "Liberation Serif", serif;
+  --font-sans:  "IBM Plex Sans", "Liberation Sans", Arial, sans-serif;
+  --font-mono:  "IBM Plex Mono", monospace;
+
+  --fs-cover:  23pt;
+  --fs-h1:     25pt;
+  --fs-h2:     23pt;
+  --fs-h3:     12.5pt;
+  --fs-body:    9.2pt;
+  --fs-small:   7.5pt;
+  --fs-footer:  6pt;
+
+  --lh-tight: 1.15;
+  --lh-body:  1.5;
+
+  /* ---------- Grilla A4 ---------- */
+  --margin-top:    19mm;
+  --margin-x:      18mm;
+  --margin-bottom: 15mm;
+  --gutter:         6mm;
+}
+
+.eumera-mining   { --accent: var(--copper); }
+.eumera-sourcing { --accent: var(--ocean); }
+
+/* ------------------------------------------------------------
+   Página
+   Requiere: page.emulate_media("print") y
+   page.pdf(width="210mm", height="297mm", print_background=True,
+            margin=0, prefer_css_page_size=True)
+   ------------------------------------------------------------ */
+@page {
+  size: A4;
+  margin: var(--margin-top) var(--margin-x) var(--margin-bottom);
+
+  @bottom-left {
+    content: "EUMERA GMBH · CONFIDENCIAL";
+    font-family: var(--font-sans);
+    font-size: var(--fs-footer);
+    letter-spacing: .18em;
+    color: #677593;
+  }
+  @bottom-right {
+    content: "ES · " counter(page, decimal-leading-zero);
+    font-family: var(--font-sans);
+    font-size: var(--fs-footer);
+    letter-spacing: .18em;
+    color: #677593;
+  }
+}
+
+@page cover {
+  margin: 0;
+  @bottom-left  { content: none; }
+  @bottom-right { content: none; }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--white);
+  color: var(--slate-400);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+/* ------------------------------------------------------------
+   Página de contenido
+   ------------------------------------------------------------ */
+.page { page-break-after: always; }
+.page:last-child { page-break-after: auto; }
+
+/* ------------------------------------------------------------
+   Portada
+   El logo va INLINE como SVG (2tono-blanco), directo sobre el navy.
+   No usar PNG en base64 ni la caja blanca redondeada: esa caja era
+   un parche por no existir versión para fondo oscuro. Ahora existe.
+   ------------------------------------------------------------ */
+.cover {
+  page: cover;
+  background: var(--navy-900);
+  color: var(--white);
+  min-height: 297mm;
+  padding: var(--margin-top) var(--margin-x) var(--margin-bottom);
+}
+.cover .logo     { margin: 16mm 0 12mm; }
+.cover .logo svg { width: 34mm; height: auto; display: block; }
+.cover h1 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: var(--fs-cover);
+  line-height: 1.25;
+  color: var(--white);
+  margin: 0 0 6mm;
+}
+
+/* ------------------------------------------------------------
+   Logo — tamaños mínimos y área de resguardo
+   Resguardo = mitad de la altura del isotipo, en todo el contorno.
+   ------------------------------------------------------------ */
+.logo--header  { width: 34mm; }   /* mínimo horizontal: 28mm */
+.logo--isotipo { width: 12mm; }   /* mínimo isotipo:      8mm */
+
+/* ------------------------------------------------------------
+   Tipografía
+   ------------------------------------------------------------ */
+h1.doc, h2.sec, h2.toc-title {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  color: var(--navy-900);
+  line-height: var(--lh-tight);
+  margin: 0 0 12pt;
+}
+h1.doc       { font-size: var(--fs-h1); }
+h2.sec,
+h2.toc-title { font-size: var(--fs-h2); }
+
+h3.sub {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: var(--fs-h3);
+  color: var(--navy-900);
+  margin: 0 0 8pt;
+}
+
+p { margin: 0 0 8pt; }
+strong { color: var(--navy-900); font-weight: 600; }
+a { color: var(--accent); text-decoration: none; }
+
+.rule { height: 2px; width: 18mm; background: var(--accent); margin: 0 0 4mm; }
+
+/* ------------------------------------------------------------
+   Componentes
+   ------------------------------------------------------------ */
+.callout {
+  background: var(--slate-50);
+  border-left: 3px solid var(--accent);
+  padding: 4mm 5mm;
+  margin: 4mm 0;
+}
+
+table { width: 100%; border-collapse: collapse; font-size: var(--fs-small); }
+th {
+  text-align: left;
+  padding: 2.5mm 3mm;
+  background: var(--navy-900);
+  color: var(--white);
+  font-size: var(--fs-footer);
+  text-transform: uppercase;
+  letter-spacing: .1em;
+}
+td { padding: 2.5mm 3mm; border-bottom: 1px solid var(--slate-200); }
+tr:nth-child(even) td { background: var(--slate-50); }
+
+ol.steps { list-style: none; padding: 0; counter-reset: s; }
+ol.steps li { position: relative; counter-increment: s; padding-left: 10mm; margin-bottom: 3mm; }
+ol.steps li::before {
+  content: counter(s, decimal-leading-zero);
+  position: absolute; left: 0; top: 0;
+  font-family: var(--font-serif);
+  color: var(--accent);
+}
+
+.disclaimer {
+  font-size: var(--fs-footer);
+  color: var(--slate-400);
+  line-height: 1.4;
+  border-top: 1px solid var(--slate-200);
+  padding-top: 3mm;
+  margin-top: 5mm;
+}
+
+/* Multi-columna: usar display:table, NO column-count (limitación WebKit) */
+.cols      { display: table; width: 100%; border-spacing: var(--gutter) 0; }
+.cols__col { display: table-cell; vertical-align: top; }
+
+/* ============================================================
+   MIGRACIÓN — equivalencias desde el sistema anterior
+   Buscar y reemplazar en documentos existentes:
+
+     --navy       #101F3E  →  --navy-900   #0A1F4C
+     --ink        #17243F  →  --navy-900   #0A1F4C
+     --accent     #2C3A5B  →  --blue-700   #013E7A
+     --body       #565F70  →  --slate-400  #677593
+     --steel      #6F7889  →  --slate-400  #677593
+     --muted      #7F8794  →  --slate-400  #677593
+     --rule       #D9D7CF  →  --slate-200  #A6B4C8
+     --rule-soft  #E4E2DA  →  --slate-200  #A6B4C8
+     --tint       #E7E9EF  →  --slate-50   #E0E8F0  (declarado, nunca usado)
+     --cream      #FFFFFF  →  --white      #FFFFFF
+     --copper     #B0602A  →  --copper     #B0602A  (sin cambio — ahora es acento Mining)
+   ============================================================ */

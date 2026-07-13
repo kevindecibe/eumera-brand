@@ -1,0 +1,29 @@
+MIT License
+
+Copyright (c) 2026 EUMERA GmbH
+
+Aplica al CÓDIGO y a las HOJAS DE ESTILO de este repositorio
+(bootstrap.sh, scripts/, example/, brand/eumera-brand.css).
+
+NO aplica a los logos ni a la marca EUMERA (brand/logos/), que son
+propiedad de EUMERA GmbH con todos los derechos reservados.
+NO aplica a las tipografías (fonts/), bajo SIL Open Font License 1.1.
+Ver NOTICE.md.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
