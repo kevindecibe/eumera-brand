@@ -54,7 +54,7 @@ brand/
   eumera-brand.css              paleta, tipografía, grilla A4, componentes
   logos/                        12 SVG — 3 lockups x 4 variantes
 fonts/
-  otf/                          IBM Plex Serif / Sans / Mono
+  otf/                          IBM Plex Serif / Sans / Mono (15 caras)
   OFL-LICENSE.txt
 scripts/
   install-fonts.sh              instala y verifica (lo llama bootstrap)

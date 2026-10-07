@@ -19,6 +19,19 @@ Licencia MIT (ver `LICENSE`). Uso, copia y modificación libres.
 
 `fonts/otf/` — IBM Plex, © 2017 IBM Corp.
 
+Origen: los releases oficiales de [IBM/plex](https://github.com/IBM/plex/releases)
+`@ibm/plex-sans@1.1.0`, `@ibm/plex-serif@1.1.0` y `@ibm/plex-mono@1.1.0`
+(`fonts/complete/otf/`), copiados sin modificar. Caras incluidas:
+
+| familia | caras |
+| --- | --- |
+| Sans | Light, Regular, Italic, Medium, SemiBold, Bold |
+| Serif | Regular, Italic, SemiBold, SemiBoldItalic, Bold, BoldItalic |
+| Mono | Regular, Medium, SemiBold |
+
+Son las que usa la web (`eumera-sourcing`, `src/lib/fonts.ts`). Si se suma una
+cara, que salga del mismo release para no mezclar versiones.
+
 Ver `fonts/OFL-LICENSE.txt`. Redistribuidas acá bajo los términos de la OFL, que
 permite uso comercial. **La licencia debe viajar con los archivos**: si copiás las
 fuentes a otro lado, copiá también `OFL-LICENSE.txt`. No es una formalidad, es lo
